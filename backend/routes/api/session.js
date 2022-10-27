@@ -50,13 +50,11 @@ router.post(
       }
 
       await setTokenCookie(res, user);
-
       return res.json({
-        user
+        user,
       });
     }
   );
-
 
 // backend/routes/api/session.js
 // ...
@@ -71,6 +69,8 @@ router.delete(
   );
 
   // ...
+
+  /*
 
 // backend/routes/api/session.js
 // ...
@@ -88,6 +88,35 @@ router.get(
       } else return res.json({});
     }
   );
+
+  // ...
+
+
+  */
+
+  // backend/routes/api/session.js
+  // ...
+
+  // Get the Current User
+  router.get(
+    '/',
+    restoreUser,
+    (req, res) => {
+      const { user } = req;
+      if (user) {
+        // const { id, firstName, lastName, email, username } = user
+
+        return res.json({
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          username: user.username
+        })
+
+      } else return res.json({});
+    }
+  )
 
   // ...
 
