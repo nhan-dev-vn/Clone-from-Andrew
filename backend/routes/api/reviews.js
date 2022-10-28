@@ -15,7 +15,7 @@ const router = express.Router();
 
 
 // Get all Reviews of the Current User
-router.get('/', requireAuth, async (req, res) => {
+router.get('/', restoreUser, requireAuth, async (req, res) => {
     const { user } = req
 
     const allReviews = await Review.findAll({
@@ -113,7 +113,7 @@ router.get('/:spotId', async (req, res) => {
 
 
 // Add an Image to a Review based on the Review's id
-router.post('/:reviewId/images', requireAuth, async (req, res) => {
+router.post('/:reviewId/images', restoreUser, requireAuth, async (req, res) => {
 
     const { user } = req
 
@@ -146,7 +146,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
 
 
 // Edit a Review
-router.put('/:reviewId', requireAuth, async (req, res) => {
+router.put('/:reviewId', restoreUser, requireAuth, async (req, res) => {
 
     const { user } = req
 
@@ -189,7 +189,7 @@ router.put('/:reviewId', requireAuth, async (req, res) => {
 
 
 // Delete a Review
-router.delete('/:reviewId', requireAuth, async (req, res) => {
+router.delete('/:reviewId', restoreUser, requireAuth, async (req, res) => {
 
     const { user } = req
 
