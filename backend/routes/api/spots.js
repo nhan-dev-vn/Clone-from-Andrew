@@ -62,28 +62,38 @@ router.get('/', validateFilters, async (req, res) => {
 
     const where = {}
 
-    if(maxLat){
-        where.maxLat = maxLat
+    if(maxLat && !minLat){
+        where.lat = {[Op.lte]: maxLat };
     }
 
-    if(minLat){
-        where.minLat = minLat
+    if(minLat && !maxLat){
+        where.lat = {[Op.gte]: minLat }
+    }
+    if(minLat && maxLat){
+        where.lat = {[Op.between]: [minLat, maxLat] }
+    }
+    if(minLng && !maxLng){
+        where.lng = {[Op.gte]: minLng };
     }
 
-    if(minLng){
-        where.minLng = minLng
+    if(maxLng && !minLng){
+        where.lat = {[Op.lte]: maxLng };
     }
 
-    if(maxLng){
-        where.maxLng = maxLng
+    if(maxLng && minLng){
+        where.lng = {[Op.between]: [minLng, maxLng] }
     }
 
-    if(minPrice){
-        where.minPrice = minPrice
+    if(minPrice && !maxPrice){
+        where.price = {[Op.gte]: minPrice }
     }
 
-    if(maxPrice){
-        where.maxPrice = maxPrice
+    if(maxPrice && !minPrice){
+        where.price = {[Op.lte]: maxPrice };
+    }
+
+    if(minPrice && maxPrice){
+        where.price = {[Op.between]: [minPrice, maxPrice] }
     }
 
     // size && size > 1 && size <= 20 ? parseInt(size) : 20
