@@ -238,10 +238,11 @@ router.get('/:spotId', async (req, res) => {
             "name",
             "description",
             "price",
+            [sequelize.fn('count', sequelize.col('id')), 'numReviews']
+            [sequelize.fn('avg', sequelize.col('stars')), 'avgRating'],
             "createdAt",
             "updatedAt",
-            [sequelize.fn('avg', sequelize.col('stars')), 'avgRating'],
-            // [sequelize.fn('', sequelize.col('url')), 'previewImage']
+
             // "avgRating",  NEED TO ADD AVG RATING
             // "previewImage"   NEED TO ADD PREVIEW IMAGE
 
@@ -269,9 +270,7 @@ router.get('/:spotId', async (req, res) => {
                 attributes: [
                     'id', 'firstName', 'lastName'
                 ],
-                // where: {
-                //     // id: User.id
-                // }
+
 
             }
         ],
@@ -279,7 +278,8 @@ router.get('/:spotId', async (req, res) => {
         where: {
             id: spotId
 
-        }
+        },
+        group:['Reviews.spotId', 'Spot.id'],
 
     })
 
