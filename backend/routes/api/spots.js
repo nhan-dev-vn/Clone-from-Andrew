@@ -593,7 +593,7 @@ router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
 
     const findUser = await User.findByPk(user.id)
 
-    if(!findSpot){
+    if(!findSpot || findSpot === []){
         return res.status(404).json({
             message: "Spot couldn't be found",
             statusCode: 404
