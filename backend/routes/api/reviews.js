@@ -15,7 +15,7 @@ const router = express.Router();
 
 
 // Get all Reviews of the Current User
-router.get('/', restoreUser, requireAuth, async (req, res) => {
+router.get('/current', restoreUser, requireAuth, async (req, res) => {
     const { user } = req
 
     const allReviews = await Review.findAll({
@@ -56,61 +56,6 @@ router.get('/', restoreUser, requireAuth, async (req, res) => {
 
 })
 
-// Get all Reviews by a Spot's id
-router.get('/:spotId', async (req, res) => {
-
-    const reqSpotId = req.params.spotId
-
-    const findSpot = await Spot.findByPk(reqSpotId)
-
-    const findReviews = await Review.findAll({
-        where: {
-            spotId: reqSpotId
-        },
-        include: [
-            {
-                model: User,
-                attributes: [
-                    'id', 'firstName', 'lastName'
-                ]
-            },
-            {
-                model: ReviewImage,
-                attributes: [
-                    'id', 'url'
-                ]
-            },
-        ]
-    })
-
-    if(!findSpot){
-        return res.status(404).json({
-            message: "Spot couldn't be found",
-            statusCode: 404
-        })
-    }
-
-    const count = await Review.count({
-        where: {
-            spotId: reqSpotId
-        }
-    })
-
-    if(count > 10){
-        return res.status(403).json({
-            message: "Maximum number of images for this resource was reached",
-            statusCode: 403
-        })
-    }
-    // console.log('FIND REVIEW  ---------', findReviews)
-
-    return res.status(200).json({
-        Reviews: findReviews
-    })
-
-
-})
-
 
 // Add an Image to a Review based on the Review's id
 router.post('/:reviewId/images', restoreUser, requireAuth, async (req, res) => {
@@ -120,6 +65,13 @@ router.post('/:reviewId/images', restoreUser, requireAuth, async (req, res) => {
     const imageData = req.body
 
     const reviewId = req.params.reviewId
+
+    if(!reviewId || reviewId === 'null'){
+        return res.status(404).json({
+            message: "Review couldn't be found",
+            statusCode: 404
+        })
+    }
 
     const findReview = await Review.findByPk(reviewId)
 
@@ -151,6 +103,13 @@ router.put('/:reviewId', restoreUser, requireAuth, async (req, res) => {
     const { user } = req
 
     const reviewId = req.params.reviewId
+
+    if(!reviewId || reviewId === 'null'){
+        return res.status(404).json({
+            message: "Review couldn't be found",
+            statusCode: 404
+        })
+    }
 
     const reviewData = req.body
 
@@ -194,6 +153,13 @@ router.delete('/:reviewId', restoreUser, requireAuth, async (req, res) => {
     const { user } = req
 
     const reviewId = req.params.reviewId
+
+    if(!reviewId || reviewId === 'null'){
+        return res.status(404).json({
+            message: "Review couldn't be found",
+            statusCode: 404
+        })
+    }
 
     const findReview = await Review.findBYPk(reviewId)
 

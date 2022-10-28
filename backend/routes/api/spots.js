@@ -6,7 +6,7 @@ const { Sequelize, Op } = require("sequelize");
 const sequelize = new Sequelize("sqlite::memory:");
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
-const { User, Spot, SpotImage, Review, Booking } = require('../../db/models');
+const { User, Spot, SpotImage, Review, ReviewImage, Booking } = require('../../db/models');
 
 // backend/routes/api/session.js
 // ...
@@ -134,7 +134,7 @@ router.get('/', validateFilters, async (req, res) => {
         ],
         group:['Reviews.spotId'],
 
-        // ...pagination
+        // ...pagination,
         // offset: 1,
         // limit: 5,
 
@@ -398,7 +398,7 @@ router.put('/:spotId', restoreUser, requireAuth, async (req, res) => {
         }
     })
 
-    await editSpot.save()
+    // await editSpot.save()
 
     editSpot = await Spot.findByPk(spotId)
 
@@ -443,12 +443,82 @@ router.delete('/:spotId', restoreUser, requireAuth, async (req, res) => {
 })
 
 
+// Get all Reviews by a Spot's id
+router.get('/:spotId/reviews', async (req, res) => {
+
+    const reqSpotId = req.params.spotId
+
+    if(!reqSpotId || reqSpotId === 'null'){
+        return res.status(404).json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        })
+    }
+
+    const findSpot = await Spot.findByPk(reqSpotId)
+
+    const findReviews = await Review.findAll({
+        where: {
+            spotId: reqSpotId
+        },
+        include: [
+            {
+                model: User,
+                attributes: [
+                    'id', 'firstName', 'lastName'
+                ]
+            },
+            {
+                model: ReviewImage,
+                attributes: [
+                    'id', 'url'
+                ]
+            },
+        ]
+    })
+
+    if(!findSpot){
+        return res.status(404).json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        })
+    }
+
+    const count = await Review.count({
+        where: {
+            spotId: reqSpotId
+        }
+    })
+
+    if(count > 10){
+        return res.status(403).json({
+            message: "Maximum number of images for this resource was reached",
+            statusCode: 403
+        })
+    }
+    // console.log('FIND REVIEW  ---------', findReviews)
+
+    return res.status(200).json({
+        Reviews: findReviews
+    })
+
+
+})
+
+
 // Create a Review for a Spot based on the Spot's id
 router.post('/:spotId/reviews', restoreUser, requireAuth, async (req, res) => {
 
     const { user } = req
 
     const reqSpotId = req.params.spotId
+
+    if(!reqSpotId || reqSpotId === 'null'){
+        return res.status(404).json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        })
+    }
 
     const reviewData = req.body
 
@@ -507,6 +577,14 @@ router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
 
     const spotId = req.params.spotId
 
+
+    if(!spotId || spotId === 'null'){
+        return res.status(404).json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        })
+    }
+
     const findSpot = await Spot.findByPk(spotId)
 
     const findUser = await User.findByPk(user.id)
@@ -518,7 +596,7 @@ router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
         })
     }
 
-    console.log(findSpot)
+    // console.log(findSpot)
 
 
 

@@ -38,7 +38,7 @@ const validateSignup = [
 
 // backend/routes/api/users.js
 // ...
-
+/*
 // Sign up
 router.post(
     '/',
@@ -54,7 +54,71 @@ router.post(
       });
     }
   );
+*/
 
+
+// Sign up a User
+router.post(
+  '/',
+  validateSignup,
+  async (req, res) => {
+
+    const { email, password, username, firstName, lastName } = req.body;
+
+    if(!email || !password || !username || !firstName || !lastName){
+      return res.status(400).json({
+        message: "Validation error",
+        statusCode: 400,
+        errors: {
+          email: "Invalid email",
+          username: "Username is required",
+          firstName: "First Name is required",
+          lastName: "Last Name is required"
+        }
+      })
+    }
+
+    const findUserEmail = await User.findAll({
+      where: {
+        email: email
+      }
+    })
+
+    const findUserUsername = await User.findAll({
+      where: {
+        username: username
+      }
+    })
+
+    if(findUserEmail){
+      return res.status(403).json({
+        message: "User already exists",
+        statusCode: 403,
+        errors: {
+          email: "User with that email already exists"
+        }
+      })
+    }
+
+    if(findUserUsername){
+      return res.status(403).json({
+        message: "User already exists",
+        statusCode: 403,
+        errors: {
+          email: "User with that username already exists"
+        }
+      })
+    }
+
+    const user = await User.signup({ email, username, password, firstName, lastName });
+
+    await setTokenCookie(res, user);
+
+    return res.json({
+      user,
+    });
+  }
+);
 
 
 

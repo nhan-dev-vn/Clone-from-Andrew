@@ -24,6 +24,13 @@ router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
 
     const imageId = req.params.imageId
 
+    if(!imageId || imageId === 'null'){
+        return res.status(404).json({
+            message: "Review Image couldn't be found",
+            statusCode: 404
+        })
+    }
+
     const findImage = await ReviewImage.findByPk(imageId)
 
     if(!findImage){
@@ -34,7 +41,7 @@ router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
         })
 
     }
-    
+
     const findReview = await Review.findByPk(findImage.dataValues.reviewId)
 
     if(findReview.dataValues.userId !== user.id){

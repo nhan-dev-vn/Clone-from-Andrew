@@ -82,6 +82,13 @@ router.put('/:bookingId', restoreUser, requireAuth, async (req, res) => {
 
     const bookingId = req.params.bookingId
 
+    if(!bookingId || bookingId === 'null'){
+        return res.status(404).json({
+            message: "Booking couldn't be found",
+            statusCode: 404
+        })
+    }
+
     const {startDate, endDate} = bookingData
 
     const findBooking = await Booking.findByPk(bookingId)
@@ -171,6 +178,13 @@ router.delete('/:bookingId', restoreUser, requireAuth, async (req, res) => {
     const { user } = req
 
     const bookingId = req.params.bookingId
+
+    if(!bookingId || bookingId === 'null'){
+        return res.status(404).json({
+            message: "Booking couldn't be found",
+            statusCode: 404
+        })
+    }
 
     const findBooking = await Booking.findByPk(bookingId)
 
