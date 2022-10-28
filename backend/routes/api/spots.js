@@ -145,7 +145,7 @@ router.get('/', validateFilters, async (req, res) => {
         group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
         // group:['Spot.id'],
 
-        // ...pagination,
+        ...pagination,
         // offset: 1,
         // limit: 5,
 
