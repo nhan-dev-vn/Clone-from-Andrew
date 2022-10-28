@@ -3,10 +3,10 @@ const express = require('express');
 // const { Op, sequelize } = require("sequelize");
 
 const { Sequelize, Op } = require("sequelize");
-const sequelize = new Sequelize("sqlite::memory:");
+// const sequelize = new Sequelize("sqlite::memory:");
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
-const { User, Spot, SpotImage, Review, ReviewImage, Booking } = require('../../db/models');
+const { sequelize, User, Spot, SpotImage, Review, ReviewImage, Booking } = require('../../db/models');
 
 // backend/routes/api/session.js
 // ...
