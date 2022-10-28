@@ -254,9 +254,6 @@ router.get('/:spotId', async (req, res) => {
                 attributes: [
                     'id', 'url', 'preview'
                 ],
-                where: {
-                    preview: true
-                }
             },
             {
                 model: Review,
@@ -275,7 +272,7 @@ router.get('/:spotId', async (req, res) => {
             }
         ],
 
-        group:['Reviews.spotId', 'Spot.id'],
+        group:['Reviews.spotId', 'Spot.id', 'SpotImages.id'],
 
     })
 
