@@ -123,6 +123,7 @@ router.get('/', validateFilters, async (req, res) => {
                 attributes: [],
             }
         ],
+
         attributes: [
 
             "id",
@@ -142,6 +143,7 @@ router.get('/', validateFilters, async (req, res) => {
             [sequelize.fn('', sequelize.col('url')), 'previewImage']
 
         ],
+
         group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
         // group:['Spot.id'],
 
@@ -156,6 +158,7 @@ router.get('/', validateFilters, async (req, res) => {
     return res.json({
         Spots: allSpots
     })
+    
 })
 
 
