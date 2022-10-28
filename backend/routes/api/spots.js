@@ -166,7 +166,7 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
 
     const allSpots = await Spot.findAll({
 
-        group:['Reviews.spotId'],
+        group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
         attributes: [
 
             "id",
