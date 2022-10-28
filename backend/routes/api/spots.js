@@ -662,6 +662,13 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
 
     const spotId = req.params.spotId
 
+    if(!spotId || spotId === 'null'){
+        return res.status(404).json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        })
+    }
+
     const bookingData = req.body
 
     const { startDate, endDate } = bookingData

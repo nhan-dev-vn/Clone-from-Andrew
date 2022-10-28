@@ -161,7 +161,7 @@ router.delete('/:reviewId', restoreUser, requireAuth, async (req, res) => {
         })
     }
 
-    const findReview = await Review.findBYPk(reviewId)
+    const findReview = await Review.findByPk(reviewId)
 
     if(!findReview){
         return res.status(404).json({
