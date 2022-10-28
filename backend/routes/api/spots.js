@@ -132,7 +132,8 @@ router.get('/', validateFilters, async (req, res) => {
             [sequelize.fn('', sequelize.col('url')), 'previewImage']
 
         ],
-        group:['Reviews.spotId'],
+        // group:['Reviews.spotId'],
+        group:['Spot.id'],
 
         // ...pagination,
         // offset: 1,
