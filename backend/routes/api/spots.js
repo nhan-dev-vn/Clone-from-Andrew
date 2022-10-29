@@ -135,8 +135,11 @@ router.get('/', validateFilters, async (req, res) => {
         ],
         // where,
         where: {
-            [Op.gte]: 0,
+            id: {
+                [Op.gte]: 0,
+            },
             ...where
+
         }
     });
 
