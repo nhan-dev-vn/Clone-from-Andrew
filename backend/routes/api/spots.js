@@ -659,6 +659,8 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
     const bookingData = req.body
 
     const { startDate, endDate } = bookingData
+    const allspots = await Spot.findAll();
+    console.log(allspots);
 
     const findSpot = await Spot.findByPk(spotId)
 
