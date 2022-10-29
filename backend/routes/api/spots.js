@@ -130,8 +130,8 @@ router.get('/', validateFilters, async (req, res) => {
             "price",
             "createdAt",
             "updatedAt",
-            // [sequelize.fn('avg', sequelize.col('stars')), 'avgRating'],
-            // [sequelize.fn('', sequelize.col('url')), 'previewImage']
+            [sequelize.fn('avg', sequelize.col('stars')), 'avgRating'],
+            [sequelize.fn('', sequelize.col('url')), 'previewImage']
         ],
         where,
         // where: {
@@ -420,14 +420,14 @@ router.delete('/:spotId', restoreUser, requireAuth, async (req, res) => {
 
     const spotId = req.params.spotId
 
-    const findSpot = await Spot.findByPk(spotId).toJSON();
+    const findSpot = await Spot.findByPk(spotId);
 
     if(!findSpot){
         return res.status(404).json({
             message: "Could not find the specified spot"
         })
     }
-    if(findSpot.ownerId !== user.id){
+    if(findSpot.dataValues.ownerId !== user.id){
         return res.status(400).json({message: "forbidden action"})
     }
 
