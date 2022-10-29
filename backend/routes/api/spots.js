@@ -114,68 +114,68 @@ router.get('/', validateFilters, async (req, res) => {
     // page && page > 1 && page <= 10 ? parseInt(page) : 1
 
 
-    const pagination = {
-        limit: page,
-        offset: size * (page - 1),
-    }
+    // const pagination = {
+    //     limit: page,
+    //     offset: size * (page - 1),
+    // }
 
 
-    const allSpots = await Spot.findAll({
+    // const allSpots = await Spot.findAll({
 
-        attributes: [
+    //     attributes: [
 
-            "id",
-            "ownerId",
-            "address",
-            "city",
-            "state",
-            "country",
-            "lat",
-            "lng",
-            "name",
-            "description",
-            "price",
-            "createdAt",
-            "updatedAt",
-            [sequelize.fn('avg', sequelize.col('stars')), 'avgRating'],
-            [sequelize.fn('', sequelize.col('url')), 'previewImage']
+    //         "id",
+    //         "ownerId",
+    //         "address",
+    //         "city",
+    //         "state",
+    //         "country",
+    //         "lat",
+    //         "lng",
+    //         "name",
+    //         "description",
+    //         "price",
+    //         "createdAt",
+    //         "updatedAt",
+    //         [sequelize.fn('avg', sequelize.col('stars')), 'avgRating'],
+    //         [sequelize.fn('', sequelize.col('url')), 'previewImage']
 
-        ],
+    //     ],
 
-        include: [
-            {
-                model: SpotImage,
-                attributes: [
+    //     include: [
+    //         {
+    //             model: SpotImage,
+    //             attributes: [
 
-                ],
-                where: {
-                            preview: true
-                        },
-            },
-            {
-                model: Review,
-                attributes: [
+    //             ],
+    //             where: {
+    //                         preview: true
+    //                     },
+    //         },
+    //         {
+    //             model: Review,
+    //             attributes: [
 
-                ],
-            }
-        ],
+    //             ],
+    //         }
+    //     ],
 
-        group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
-        // group:['Spot.id'],
+    //     group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
+    //     // group:['Spot.id'],
 
-        where
-        // where: {
-        //     ...where
-        // },
+    //     where
+    //     // where: {
+    //     //     ...where
+    //     // },
 
-        // ...pagination,
-        // offset: 1,
-        // limit: 5,
+    //     // ...pagination,
+    //     // offset: 1,
+    //     // limit: 5,
 
-        // subQuery: false
+    //     // subQuery: false
 
-    })
-
+    // })
+    const allSpots = await Spot.findAll();
     return res.status(200).json({
         Spots: allSpots
     })
