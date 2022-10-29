@@ -84,7 +84,7 @@ router.put('/:bookingId', restoreUser, requireAuth, async (req, res) => {
 
     if(!bookingId || bookingId === 'null'){
         return res.status(404).json({
-            message: "Booking couldn't be found",
+            message: "Invalid Booking Id",
             statusCode: 404
         })
     }
@@ -161,12 +161,15 @@ router.put('/:bookingId', restoreUser, requireAuth, async (req, res) => {
             }
         })
 
-    const findNewBooking = Booking.findByPk(bookingId)
+    let updatedBooking
+    if(editBooking){
+        updatedBooking = {id: bookingId, ...bookingData}
+    };
 
     // await editBooking.save()
 
     return res.status(200).json({
-        findNewBooking
+        updatedBooking
     })
 
 })

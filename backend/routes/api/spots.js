@@ -692,7 +692,6 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
         })
     }
 
-    /*
     if(findSpot.dataValues.ownerId === user.id){
 
         return res.status(400).json({
@@ -704,7 +703,7 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
         })
 
     }
-    */
+
 
 
     const doesBookingAlreadyExist = await Booking.findAll({
