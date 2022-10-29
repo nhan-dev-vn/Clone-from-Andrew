@@ -413,11 +413,11 @@ router.delete('/:spotId', restoreUser, requireAuth, async (req, res) => {
 
     const spotId = req.params.spotId
 
-    const findSpot = await Spot.findByPk(spotId)
+    const findSpot = await Spot.findByPk(spotId).toJSON();
 
     if(!findSpot){
         return res.status(404).json({
-
+            message: "Could not find the specified spot"
         })
     }
     if(findSpot.ownerId !== user.id){
