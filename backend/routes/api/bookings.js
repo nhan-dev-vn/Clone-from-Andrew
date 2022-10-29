@@ -59,7 +59,7 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
                         where: {
                             preview: true
                         },
-                        required: true
+                        // required: true
                     }
                 ],
             }

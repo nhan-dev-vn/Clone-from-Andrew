@@ -55,7 +55,6 @@ const validateFilters = [
 
 // Get all Spots
 router.get('/', validateFilters, async (req, res) => {
-// router.get('/', async (req, res) => {
 
     let { page, size } = req.query
 
@@ -110,8 +109,7 @@ router.get('/', validateFilters, async (req, res) => {
             },
             {
                 model: Review,
-                attributes: [],
-                require: false
+                attributes: []
             }
         ],
 
@@ -653,7 +651,7 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
 
     if(!spotId || spotId === 'null'){
         return res.status(404).json({
-            message: "Spot couldn't be found",
+            message: "Invalid SpotId",
             statusCode: 404
         })
     }
