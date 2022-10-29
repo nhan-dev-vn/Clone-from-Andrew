@@ -200,20 +200,18 @@ router.get('/', validateFilters, async (req, res) => {
         include: [
             {
                 model: SpotImage,
-                attributes: [
-
-                ],
+                attributes: [],
                 where: {
                     preview: true
                 }
             },
             {
                 model: Review,
-                attributes: [
-
-                ]
+                attributes: []
             }
         ],
+
+        group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
 
     });
 
