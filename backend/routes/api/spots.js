@@ -163,7 +163,7 @@ router.get('/', validateFilters, async (req, res) => {
         group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
         // group:['Spot.id'],
 
-        wh
+        where
         // where: {
         //     ...where
         // },
