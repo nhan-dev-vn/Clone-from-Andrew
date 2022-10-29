@@ -97,17 +97,27 @@ router.get('/', async (req, res) => {
         where.price = {[Op.between]: [minPrice, maxPrice] }
     }
 
+
+    if(!size){
+        size = 20
+    }
+
+    if(!page){
+        page = 1
+    }
+
+    // size = parseInt(size)
+    // page = parseInt(page)
+
     // size && size > 1 && size <= 20 ? parseInt(size) : 20
 
     // page && page > 1 && page <= 10 ? parseInt(page) : 1
 
+
     const pagination = {
-        limit: parseInt(page),
+        limit: page,
         offset: size * (page - 1),
     }
-
-
-
 
 
     const allSpots = await Spot.findAll({
@@ -135,7 +145,9 @@ router.get('/', async (req, res) => {
         include: [
             {
                 model: SpotImage,
-                attributes: [],
+                attributes: [
+
+                ],
                 where: {
                             preview: true
                         },
@@ -151,13 +163,16 @@ router.get('/', async (req, res) => {
         group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
         // group:['Spot.id'],
 
+
+        where: {
+            ...where
+        },
+
         // ...pagination,
         // offset: 1,
         // limit: 5,
 
-        where: {
-            ...where
-        }
+        // subQuery: false
 
     })
 
