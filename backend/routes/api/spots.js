@@ -142,7 +142,9 @@ router.get('/', async (req, res) => {
             },
             {
                 model: Review,
-                attributes: [],
+                attributes: [
+
+                ],
             }
         ],
 
@@ -153,7 +155,7 @@ router.get('/', async (req, res) => {
         // offset: 1,
         // limit: 5,
 
-        where
+        // where
 
     })
 
