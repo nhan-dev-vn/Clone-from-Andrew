@@ -709,7 +709,7 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
         }
     })
 
-    if(doesBookingAlreadyExist){
+    if(doesBookingAlreadyExist.length){
         return res.status(403).json({
             message: "Sorry, this spot is already booked for the specified dates",
             statusCode: 403,
