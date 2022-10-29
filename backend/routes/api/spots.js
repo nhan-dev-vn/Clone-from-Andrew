@@ -155,7 +155,9 @@ router.get('/', async (req, res) => {
         // offset: 1,
         // limit: 5,
 
-        // where
+        where: {
+            ...where
+        }
 
     })
 
