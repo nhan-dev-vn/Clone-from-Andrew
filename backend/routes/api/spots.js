@@ -575,7 +575,6 @@ router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
 
     const spotId = req.params.spotId
 
-
     if(!spotId || spotId === 'null'){
         return res.status(404).json({
             message: "Spot couldn't be found",
@@ -688,6 +687,7 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
         })
     }
 
+    /*
     if(findSpot.dataValues.ownerId === user.id){
 
         return res.status(400).json({
@@ -699,8 +699,8 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
         })
 
     }
+    */
 
-    // ADD DATE CONFLICT LOGIC
 
     const doesBookingAlreadyExist = await Booking.findAll({
         where: {
