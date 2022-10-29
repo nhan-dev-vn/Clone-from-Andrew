@@ -54,8 +54,8 @@ const validateFilters = [
   ];
 
 // Get all Spots
-// router.get('/', validateFilters, async (req, res) => {
-router.get('/', async (req, res) => {
+router.get('/', validateFilters, async (req, res) => {
+// router.get('/', async (req, res) => {
 
     let { page, size } = req.query
 
@@ -163,10 +163,10 @@ router.get('/', async (req, res) => {
         group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
         // group:['Spot.id'],
 
-
-        where: {
-            ...where
-        },
+        wh
+        // where: {
+        //     ...where
+        // },
 
         // ...pagination,
         // offset: 1,
