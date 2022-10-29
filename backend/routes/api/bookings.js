@@ -25,9 +25,9 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
         where: {
             userId: user.id
         },
-        include: [
-            {
-                model: Spot,
+        // include: [
+        //     {
+        //         model: Spot,
                 attributes: [
 
                     "id",
@@ -62,8 +62,8 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
                         required: true
                     }
                 ],
-            }
-        ]
+        //     }
+        // ]
     })
 
     return res.status(200).json({
