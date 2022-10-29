@@ -133,7 +133,11 @@ router.get('/', validateFilters, async (req, res) => {
             [sequelize.fn('avg', sequelize.col('stars')), 'avgRating'],
             [sequelize.fn('', sequelize.col('url')), 'previewImage']
         ],
-        where
+        // where,
+        where: {
+            [Op.gte]: 0,
+            ...where
+        }
     });
 
     return res.status(200).json({
