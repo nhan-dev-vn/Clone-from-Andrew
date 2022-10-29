@@ -98,83 +98,6 @@ router.get('/', validateFilters, async (req, res) => {
     }
 
 
-    if(!size){
-        size = 20
-    }
-
-    if(!page){
-        page = 1
-    }
-
-    // size = parseInt(size)
-    // page = parseInt(page)
-
-    // size && size > 1 && size <= 20 ? parseInt(size) : 20
-
-    // page && page > 1 && page <= 10 ? parseInt(page) : 1
-
-
-    // const pagination = {
-    //     limit: page,
-    //     offset: size * (page - 1),
-    // }
-
-
-    // const allSpots = await Spot.findAll({
-
-    //     attributes: [
-
-    //         "id",
-    //         "ownerId",
-    //         "address",
-    //         "city",
-    //         "state",
-    //         "country",
-    //         "lat",
-    //         "lng",
-    //         "name",
-    //         "description",
-    //         "price",
-    //         "createdAt",
-    //         "updatedAt",
-    //         [sequelize.fn('avg', sequelize.col('stars')), 'avgRating'],
-    //         [sequelize.fn('', sequelize.col('url')), 'previewImage']
-
-    //     ],
-
-    //     include: [
-    //         {
-    //             model: SpotImage,
-    //             attributes: [
-
-    //             ],
-    //             where: {
-    //                         preview: true
-    //                     },
-    //         },
-    //         {
-    //             model: Review,
-    //             attributes: [
-
-    //             ],
-    //         }
-    //     ],
-
-    //     group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
-    //     // group:['Spot.id'],
-
-    //     where
-    //     // where: {
-    //     //     ...where
-    //     // },
-
-    //     // ...pagination,
-    //     // offset: 1,
-    //     // limit: 5,
-
-    //     // subQuery: false
-
-    // })
 
     const allSpots = await Spot.findAll({
         include: [
@@ -187,7 +110,8 @@ router.get('/', validateFilters, async (req, res) => {
             },
             {
                 model: Review,
-                attributes: []
+                attributes: [],
+                require: false
             }
         ],
 
@@ -211,12 +135,7 @@ router.get('/', validateFilters, async (req, res) => {
             [sequelize.fn('avg', sequelize.col('stars')), 'avgRating'],
             [sequelize.fn('', sequelize.col('url')), 'previewImage']
         ],
-
-        where: {
-            id: {
-                [Op.gte]: 8
-            }
-        }
+        where
     });
 
     return res.status(200).json({
@@ -266,7 +185,8 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
                 model: Review,
                 attributes: [
                     // 'stars'
-                ]
+                ],
+
             }
         ],
 
