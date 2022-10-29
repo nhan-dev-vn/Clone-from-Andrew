@@ -110,19 +110,6 @@ router.get('/', validateFilters, async (req, res) => {
 
 
     const allSpots = await Spot.findAll({
-        include: [
-            {
-                model: SpotImage,
-                attributes: [],
-                where: {
-                            preview: true
-                        },
-            },
-            {
-                model: Review,
-                attributes: [],
-            }
-        ],
 
         attributes: [
 
@@ -144,6 +131,20 @@ router.get('/', validateFilters, async (req, res) => {
 
         ],
 
+        include: [
+            {
+                model: SpotImage,
+                attributes: [],
+                where: {
+                            preview: true
+                        },
+            },
+            {
+                model: Review,
+                attributes: [],
+            }
+        ],
+
         group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
         // group:['Spot.id'],
 
@@ -155,7 +156,7 @@ router.get('/', validateFilters, async (req, res) => {
 
     })
 
-    return res.json({
+    return res.status(200).json({
         Spots: allSpots
     })
 
