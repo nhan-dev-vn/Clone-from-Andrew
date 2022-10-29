@@ -175,7 +175,48 @@ router.get('/', validateFilters, async (req, res) => {
     //     // subQuery: false
 
     // })
-    const allSpots = await Spot.findAll();
+
+    const allSpots = await Spot.findAll({
+
+        attributes: [
+
+            "id",
+            "ownerId",
+            "address",
+            "city",
+            "state",
+            "country",
+            "lat",
+            "lng",
+            "name",
+            "description",
+            "price",
+            "createdAt",
+            "updatedAt",
+            [sequelize.fn('avg', sequelize.col('stars')), 'avgRating'],
+            [sequelize.fn('', sequelize.col('url')), 'previewImage']
+        ],
+
+        include: [
+            {
+                model: SpotImage,
+                attributes: [
+
+                ],
+                where: {
+                    preview: true
+                }
+            },
+            {
+                model: Review,
+                attributes: [
+
+                ]
+            }
+        ],
+
+    });
+
     return res.status(200).json({
         Spots: allSpots
     })
