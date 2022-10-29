@@ -97,6 +97,9 @@ router.get('/', validateFilters, async (req, res) => {
     }
 
 
+    const allSpots = await Spot.findAll()
+
+    /*
 
     const allSpots = await Spot.findAll({
         include: [
@@ -142,6 +145,8 @@ router.get('/', validateFilters, async (req, res) => {
         // }
 
     });
+
+    */
 
     return res.status(200).json({
         Spots: allSpots
