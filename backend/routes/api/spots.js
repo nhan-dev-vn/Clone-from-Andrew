@@ -158,7 +158,7 @@ router.get('/', validateFilters, async (req, res) => {
     return res.json({
         Spots: allSpots
     })
-    
+
 })
 
 
@@ -169,7 +169,6 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
 
     const allSpots = await Spot.findAll({
 
-        group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
         attributes: [
 
             "id",
@@ -206,6 +205,9 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
                 ]
             }
         ],
+
+        group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
+
 
         where: {
             ownerId: user.id
