@@ -177,6 +177,21 @@ router.get('/', validateFilters, async (req, res) => {
     // })
 
     const allSpots = await Spot.findAll({
+        include: [
+            {
+                model: SpotImage,
+                attributes: [],
+                where: {
+                    preview: true
+                }
+            },
+            {
+                model: Review,
+                attributes: []
+            }
+        ],
+
+        group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
 
         attributes: [
 
@@ -197,22 +212,11 @@ router.get('/', validateFilters, async (req, res) => {
             [sequelize.fn('', sequelize.col('url')), 'previewImage']
         ],
 
-        include: [
-            {
-                model: SpotImage,
-                attributes: [],
-                where: {
-                    preview: true
-                }
-            },
-            {
-                model: Review,
-                attributes: []
+        where: {
+            id: {
+                [Op.gte]: 8
             }
-        ],
-
-        group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
-
+        }
     });
 
     return res.status(200).json({
