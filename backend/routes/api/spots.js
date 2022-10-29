@@ -54,7 +54,8 @@ const validateFilters = [
   ];
 
 // Get all Spots
-router.get('/', validateFilters, async (req, res) => {
+// router.get('/', validateFilters, async (req, res) => {
+router.get('/', async (req, res) => {
 
     let { page, size } = req.query
 
@@ -152,7 +153,7 @@ router.get('/', validateFilters, async (req, res) => {
         // offset: 1,
         // limit: 5,
 
-        // where
+        where
 
     })
 
