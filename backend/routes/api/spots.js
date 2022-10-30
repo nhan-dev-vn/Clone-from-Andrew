@@ -56,8 +56,6 @@ const validateFilters = [
 // Get all Spots
 router.get('/', validateFilters, async (req, res) => {
 
-    let { page, size } = req.query
-
     const { maxLat, minLat, minLng, maxLng, minPrice, maxPrice } = req.query
 
     const where = {}
@@ -96,6 +94,17 @@ router.get('/', validateFilters, async (req, res) => {
         where.price = {[Op.between]: [minPrice, maxPrice] }
     }
 
+
+    let {page, size} = req.query;
+
+    if (!page) page = 1;
+    if (!size) size = 20;
+
+    let pagination = {}
+    if (parseInt(page) >= 1 && parseInt(size) >= 1) {
+        pagination.limit = size;
+        pagination.offset = size * (page - 1)
+    }
 
     // const allSpots = await Spot.findAll()
 
@@ -144,12 +153,18 @@ router.get('/', validateFilters, async (req, res) => {
         group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
 
         where,
+
         // where: {
         //     id: {
         //         [Op.gte]: 0,
         //     },
         //     ...where
         // }
+        limit: pagination.limit,
+        offset: pagination.offset,
+        // ...pagination
+        subQuery: false
+
 
     });
 
