@@ -97,26 +97,11 @@ router.get('/', validateFilters, async (req, res) => {
     }
 
 
-    const allSpots = await Spot.findAll()
+    // const allSpots = await Spot.findAll()
 
-    /*
+
 
     const allSpots = await Spot.findAll({
-        include: [
-            {
-                model: SpotImage,
-                attributes: [],
-                where: {
-                    preview: true
-                }
-            },
-            {
-                model: Review,
-                attributes: []
-            }
-        ],
-
-        group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
 
         attributes: [
 
@@ -136,6 +121,28 @@ router.get('/', validateFilters, async (req, res) => {
             [sequelize.fn('avg', sequelize.col('stars')), 'avgRating'],
             [sequelize.fn('', sequelize.col('url')), 'previewImage']
         ],
+
+        include: [
+            {
+                model: SpotImage,
+                attributes: [
+                    // 'url'
+                ],
+                where: {
+                    preview: true
+                }
+            },
+            {
+                model: Review,
+                attributes: [
+                    // 'stars'
+                ],
+
+            }
+        ],
+
+        group:['Reviews.spotId', 'SpotImages.url', 'Spot.id'],
+
         where,
         // where: {
         //     id: {
@@ -146,7 +153,7 @@ router.get('/', validateFilters, async (req, res) => {
 
     });
 
-    */
+    // */
 
     return res.status(200).json({
         Spots: allSpots
