@@ -155,7 +155,9 @@ router.get('/', validateFilters, async (req, res) => {
     // */
 
     return res.status(200).json({
-        Spots: allSpots
+        Spots: allSpots,
+        page,
+size
     })
 
 })
