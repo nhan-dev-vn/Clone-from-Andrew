@@ -162,7 +162,7 @@ router.get('/', validateFilters, async (req, res) => {
 
 
 // Get all Spots owned by the Current User
-router.get('/current', restoreUser, requireAuth, async (req, res) => {
+router.get('/current', restoreUser, requireAuth, async (req, res, next) => {
 
     const { user } = req;
 
@@ -299,7 +299,7 @@ router.get('/:spotId', async (req, res, next) => {
 
 
 // Create a Spot
-router.post('/', restoreUser, requireAuth, validateSpotBody, async (req, res) => {
+router.post('/', restoreUser, requireAuth, validateSpotBody, async (req, res, next) => {
 
     const { user } = req
 
@@ -340,7 +340,7 @@ router.post('/', restoreUser, requireAuth, validateSpotBody, async (req, res) =>
 
 
 // Add image to Spot based on SpotId
-router.post('/:spotId/images', restoreUser, requireAuth, validateSpotImageBody, async (req, res) => {
+router.post('/:spotId/images', restoreUser, requireAuth, validateSpotImageBody, async (req, res, next) => {
 
     const spotId = req.params.spotId
 
@@ -377,7 +377,7 @@ router.post('/:spotId/images', restoreUser, requireAuth, validateSpotImageBody, 
 
 
 // Edit a Spot
-router.put('/:spotId', restoreUser, requireAuth, validateSpotBody, async (req, res) => {
+router.put('/:spotId', restoreUser, requireAuth, validateSpotBody, async (req, res, next) => {
 
     const spotId = req.params.spotId
 
@@ -435,7 +435,7 @@ router.put('/:spotId', restoreUser, requireAuth, validateSpotBody, async (req, r
 
 
 // Delete a Spot
-router.delete('/:spotId', restoreUser, requireAuth, async (req, res) => {
+router.delete('/:spotId', restoreUser, requireAuth, async (req, res, next) => {
     const { user } = req
 
     const spotId = req.params.spotId
@@ -464,7 +464,7 @@ router.delete('/:spotId', restoreUser, requireAuth, async (req, res) => {
 
 
 // Get all Reviews by a Spot's id
-router.get('/:spotId/reviews', async (req, res) => {
+router.get('/:spotId/reviews', async (req, res, next) => {
 
     const reqSpotId = req.params.spotId
 
@@ -530,7 +530,7 @@ router.get('/:spotId/reviews', async (req, res) => {
 
 
 // Create a Review for a Spot based on the Spot's id
-router.post('/:spotId/reviews', restoreUser, requireAuth, validateReviewBody, async (req, res) => {
+router.post('/:spotId/reviews', restoreUser, requireAuth, validateReviewBody, async (req, res, next) => {
 
     const { user } = req
 
@@ -597,7 +597,7 @@ router.post('/:spotId/reviews', restoreUser, requireAuth, validateReviewBody, as
 
 
 // Get all Bookings for a Spot based on the Spot's id
-router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
+router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res, next) => {
 
     const { user } = req
 
@@ -683,7 +683,7 @@ router.get('/:spotId/bookings', restoreUser, requireAuth, async (req, res) => {
 
 
 // Create a Booking from a Spot based on the Spot's id
-router.post('/:spotId/bookings', restoreUser, requireAuth, validateBookingBody, async (req, res) => {
+router.post('/:spotId/bookings', restoreUser, requireAuth, validateBookingBody, async (req, res, next) => {
 
     const { user } = req
 
