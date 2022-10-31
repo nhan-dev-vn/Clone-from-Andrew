@@ -99,17 +99,11 @@ const validateFilters = [
     body('startDate')
         .exists()
         .withMessage("startDate is required")
-        .toDate()
-        .custom((value) => validator.isDate(value, { format: ISODateFormat }))
-        .withMessage('Invalid date')
         .isAfter()
         .withMessage("startDate cannot be in the past"),
     body('endDate')
         .exists()
         .withMessage("endDate is required")
-        .toDate()
-        .custom((value) => validator.isDate(value, { format: ISODateFormat }))
-        .withMessage('Invalid date')
         .isAfter()
         .withMessage("endDate cannot be on or before startDate"),
 
