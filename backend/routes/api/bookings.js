@@ -13,6 +13,7 @@ const { sequelize, User, Spot, SpotImage, Review, ReviewImage, Booking } = requi
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 // ...
+const { validateBookingBody } = require('../../utils/expressValidation')
 
 const router = express.Router();
 
@@ -74,7 +75,7 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
 
 
 // Edit a Booking
-router.put('/:bookingId', restoreUser, requireAuth, async (req, res) => {
+router.put('/:bookingId', restoreUser, requireAuth, validateBookingBody, async (req, res) => {
 
     const { user } = req
 

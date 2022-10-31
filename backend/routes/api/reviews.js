@@ -10,7 +10,7 @@ const { User, Spot, SpotImage, Review, ReviewImage } = require('../../db/models'
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 // ...
-const { validateFilters, validateSpotBody, validateBookingBody, validateReviewBody, validateSpotImageBody } = require('../../utils/expressValidation')
+const { validateReviewBody} = require('../../utils/expressValidation')
 
 const router = express.Router();
 
