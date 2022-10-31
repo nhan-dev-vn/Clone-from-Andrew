@@ -142,7 +142,7 @@ router.put('/:bookingId', restoreUser, requireAuth, async (req, res) => {
         }
     })
 
-    console.log('BOOKING EXIST ------',doesBookingAlreadyExist)
+    // console.log('BOOKING EXIST ------',doesBookingAlreadyExist)
 
     if(doesBookingAlreadyExist.length >= 1){
         return res.status(403).json({

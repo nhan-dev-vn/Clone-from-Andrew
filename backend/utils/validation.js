@@ -23,5 +23,3 @@ const handleValidationErrors = (req, _res, next) => {
 module.exports = {
   handleValidationErrors
 };
-
-
