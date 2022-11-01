@@ -692,10 +692,13 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, validateBookingBody, 
     const spotId = req.params.spotId
 
     if(!spotId || spotId === 'null'){
-        return res.status(404).json({
-            message: "Invalid SpotId",
-            statusCode: 404
-        })
+
+        return next(customErrorFormatter("Invalid SpotId", 404))
+
+        // return res.status(404).json({
+        //     message: "Invalid SpotId",
+        //     statusCode: 404
+        // })
     }
 
     const bookingData = req.body
@@ -776,7 +779,7 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, validateBookingBody, 
 
 
     return res.status(200).json({
-        newBooking
+        ...newBooking
     })
 
 })
