@@ -6,6 +6,7 @@ const { Sequelize, Op } = require("sequelize");
 // const sequelize = new Sequelize("sqlite::memory:");
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
+
 const customErrorFormatter = require('../../utils/custom-error-handler')
 
 const { sequelize, User, Spot, SpotImage, Review, ReviewImage, Booking } = require('../../db/models');
@@ -452,7 +453,9 @@ router.delete('/:spotId', restoreUser, requireAuth, async (req, res, next) => {
         // })
     }
     if(findSpot.dataValues.ownerId !== user.id){
-        return res.status(400).json({message: "Forbidden"})
+        return next(customErrorFormatter("Forbidden", 400))
+
+        // return res.status(400).json({message: "Forbidden"})
     }
 
     await findSpot.destroy()

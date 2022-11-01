@@ -6,6 +6,9 @@ const { Sequelize, Op } = require("sequelize");
 // const sequelize = new Sequelize("sqlite::memory:");
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
+
+const customErrorFormatter = require('../../utils/custom-error-handler')
+
 const { sequelize, User, Spot, SpotImage, Review, ReviewImage, Booking } = require('../../db/models');
 
 // backend/routes/api/session.js
@@ -25,27 +28,32 @@ router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
     const imageId = req.params.imageId
 
     if(!imageId || imageId === 'null'){
-        return res.status(404).json({
-            message: "Spot Image couldn't be found",
-            statusCode: 404
-        })
+        return next(customErrorFormatter("Invalid Spot ImageId", 404))
+
+        // return res.status(404).json({
+        //     message: "Spot Image couldn't be found",
+        //     statusCode: 404
+        // })
     }
 
     const findImage = await SpotImage.findByPk(imageId)
 
     if(!findImage){
+        return next(customErrorFormatter("Spot Image couldn't be found", 404))
 
-        return res.status(404).json({
-            message: "Spot Image couldn't be found",
-            statusCode: 404
-        })
+        // return res.status(404).json({
+        //     message: "Spot Image couldn't be found",
+        //     statusCode: 404
+        // })
 
     }
 
     const findSpot = await Spot.findByPk(findImage.dataValues.spotId)
 
     if(findSpot.dataValues.ownerId !== user.id){
-        return res.status(403).json({message: "Forbidden"})
+        return next(customErrorFormatter("Forbidden", 403))
+
+        // return res.status(403).json({message: "Forbidden"})
     }
 
     await findImage.destroy()

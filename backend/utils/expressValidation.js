@@ -95,6 +95,16 @@ const validateFilters = [
 
   ]
 
+  const validateReviewImageBody = [
+    body('url')
+        .exists()
+        .withMessage("URL is required")
+        .isURL(),
+
+    handleValidationErrors
+
+  ]
+
   const validateBookingBody = [
     body('startDate')
         .exists()
@@ -127,5 +137,5 @@ const validateFilters = [
 
 
   module.exports = {
-    validateFilters, validateSpotBody, validateBookingBody, validateReviewBody, validateSpotImageBody
+    validateFilters, validateSpotBody, validateBookingBody, validateReviewBody, validateReviewImageBody, validateSpotImageBody
   };

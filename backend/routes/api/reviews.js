@@ -3,6 +3,9 @@ const express = require('express');
 const { Op } = require("sequelize");
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
+
+const customErrorFormatter = require('../../utils/custom-error-handler')
+
 const { User, Spot, SpotImage, Review, ReviewImage } = require('../../db/models');
 
 // backend/routes/api/session.js
@@ -10,7 +13,7 @@ const { User, Spot, SpotImage, Review, ReviewImage } = require('../../db/models'
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 // ...
-const { validateReviewBody} = require('../../utils/expressValidation')
+const { validateReviewBody, validateReviewImageBody} = require('../../utils/expressValidation')
 
 const router = express.Router();
 
@@ -59,7 +62,7 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
 
 
 // Add an Image to a Review based on the Review's id
-router.post('/:reviewId/images', restoreUser, requireAuth, async (req, res) => {
+router.post('/:reviewId/images', restoreUser, requireAuth, validateReviewImageBody, async (req, res) => {
 
     const { user } = req
 
@@ -68,19 +71,23 @@ router.post('/:reviewId/images', restoreUser, requireAuth, async (req, res) => {
     const reviewId = req.params.reviewId
 
     if(!reviewId || reviewId === 'null'){
-        return res.status(404).json({
-            message: "Review couldn't be found",
-            statusCode: 404
-        })
+        return next(customErrorFormatter("Invalid ReviewId", 404))
+
+        // return res.status(404).json({
+        //     message: "Review couldn't be found",
+        //     statusCode: 404
+        // })
     }
 
     const findReview = await Review.findByPk(reviewId)
 
     if(!findReview){
-        return res.status(404).json({
-            message: "Review couldn't be found",
-            statusCode: 404
-        })
+        return next(customErrorFormatter("Review couldn't be found", 404))
+
+        // return res.status(404).json({
+        //     message: "Review couldn't be found",
+        //     statusCode: 404
+        // })
     }
 
     // NEED LOGIC FOR MORE THAN 10 IMAGES
@@ -94,7 +101,7 @@ router.post('/:reviewId/images', restoreUser, requireAuth, async (req, res) => {
         return res.status(200).json(createReviewImage)
     }
 
-    return
+
 })
 
 
@@ -106,10 +113,13 @@ router.put('/:reviewId', restoreUser, requireAuth, validateReviewBody, async (re
     const reviewId = req.params.reviewId
 
     if(!reviewId || reviewId === 'null'){
-        return res.status(404).json({
-            message: "Review couldn't be found",
-            statusCode: 404
-        })
+
+        return next(customErrorFormatter("Invalid ReviewId", 404))
+
+        // return res.status(404).json({
+        //     message: "Review couldn't be found",
+        //     statusCode: 404
+        // })
     }
 
     const reviewData = req.body
@@ -130,10 +140,12 @@ router.put('/:reviewId', restoreUser, requireAuth, validateReviewBody, async (re
     let findReview = await Review.findByPk(reviewId)
 
     if(!findReview){
-        return res.status(404).json({
-            message: "Review couldn't be found",
-            statusCode: 404
-        })
+        return next(customErrorFormatter("Review couldn't be found", 404))
+
+        // return res.status(404).json({
+        //     message: "Review couldn't be found",
+        //     statusCode: 404
+        // })
     }
 
     findReview = await findReview.update({
@@ -155,20 +167,25 @@ router.delete('/:reviewId', restoreUser, requireAuth, async (req, res) => {
 
     const reviewId = req.params.reviewId
 
+
     if(!reviewId || reviewId === 'null'){
-        return res.status(404).json({
-            message: "Review couldn't be found",
-            statusCode: 404
-        })
+        return next(customErrorFormatter("Invalid ReviewId", 404))
+
+        // return res.status(404).json({
+        //     message: "Review couldn't be found",
+        //     statusCode: 404
+        // })
     }
 
     const findReview = await Review.findByPk(reviewId)
 
     if(!findReview){
-        return res.status(404).json({
-            message: "Review couldn't be found",
-            statusCode: 404
-        })
+        return next(customErrorFormatter("Review couldn't be found", 404))
+
+        // return res.status(404).json({
+        //     message: "Review couldn't be found",
+        //     statusCode: 404
+        // })
     }
 
     await findReview.destroy()

@@ -6,6 +6,9 @@ const { Sequelize, Op } = require("sequelize");
 // const sequelize = new Sequelize("sqlite::memory:");
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
+
+const customErrorFormatter = require('../../utils/custom-error-handler')
+
 const { sequelize, User, Spot, SpotImage, Review, ReviewImage, Booking } = require('../../db/models');
 
 // backend/routes/api/session.js
@@ -84,10 +87,13 @@ router.put('/:bookingId', restoreUser, requireAuth, validateBookingBody, async (
     const bookingId = req.params.bookingId
 
     if(!bookingId || bookingId === 'null'){
-        return res.status(404).json({
-            message: "Invalid Booking Id",
-            statusCode: 404
-        })
+        return next(customErrorFormatter("Invalid Booking Id", 404))
+
+
+        // return res.status(404).json({
+        //     message: "Invalid Booking Id",
+        //     statusCode: 404
+        // })
     }
 
     const {startDate, endDate} = bookingData
@@ -122,9 +128,12 @@ router.put('/:bookingId', restoreUser, requireAuth, validateBookingBody, async (
     }
 
     if(findBooking.dataValues.userId !== user.id){
-        return res.status(400).json({
-            message: "validation error"
-        })
+        return next(customErrorFormatter("Forbidden", 400))
+
+
+        // return res.status(400).json({
+        //     message: "validation error"
+        // })
     }
 
     const doesBookingAlreadyExist = await Booking.findAll({
@@ -193,24 +202,30 @@ router.delete('/:bookingId', restoreUser, requireAuth, async (req, res) => {
     const findBooking = await Booking.findByPk(bookingId)
 
     if(!findBooking){
-        return res.status(404).json({
-            message: "Booking couldn't be found",
-            statusCode: 404
-        })
+        return next(customErrorFormatter("Booking couldn't be found", 404))
+
+        // return res.status(404).json({
+        //     message: "Booking couldn't be found",
+        //     statusCode: 404
+        // })
     }
 
     if(findBooking.dataValues.userId !== user.id){
-        return res.status(400).json({
-            message: "Validation error",
-            statusCode: 400
-        })
+        return next(customErrorFormatter("Forbidden", 400))
+
+        // return res.status(400).json({
+        //     message: "Validation error",
+        //     statusCode: 400
+        // })
     }
 
     if(new Date(findBooking.dataValues.startDate) > new Date()){
-        return res.status(403).json({
-            message: "Bookings that have been started can't be deleted",
-            statusCode: 403
-        })
+        return next(customErrorFormatter("Bookings that have been started can't be deleted", 403))
+
+        // return res.status(403).json({
+        //     message: "Bookings that have been started can't be deleted",
+        //     statusCode: 403
+        // })
     }
 
     await findBooking.destroy()
