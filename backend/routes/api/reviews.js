@@ -62,7 +62,7 @@ router.get('/current', restoreUser, requireAuth, async (req, res) => {
 
 
 // Add an Image to a Review based on the Review's id
-router.post('/:reviewId/images', restoreUser, requireAuth, validateReviewImageBody, async (req, res) => {
+router.post('/:reviewId/images', restoreUser, requireAuth, validateReviewImageBody, async (req, res, next) => {
 
     const { user } = req
 
@@ -106,7 +106,7 @@ router.post('/:reviewId/images', restoreUser, requireAuth, validateReviewImageBo
 
 
 // Edit a Review
-router.put('/:reviewId', restoreUser, requireAuth, validateReviewBody, async (req, res) => {
+router.put('/:reviewId', restoreUser, requireAuth, validateReviewBody, async (req, res, next) => {
 
     const { user } = req
 
@@ -161,7 +161,7 @@ router.put('/:reviewId', restoreUser, requireAuth, validateReviewBody, async (re
 
 
 // Delete a Review
-router.delete('/:reviewId', restoreUser, requireAuth, async (req, res) => {
+router.delete('/:reviewId', restoreUser, requireAuth, async (req, res, next) => {
 
     const { user } = req
 

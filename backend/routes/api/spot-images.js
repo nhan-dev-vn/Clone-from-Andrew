@@ -21,7 +21,7 @@ const router = express.Router();
 
 
 // Delete a Spot Image
-router.delete('/:imageId', restoreUser, requireAuth, async (req, res) => {
+router.delete('/:imageId', restoreUser, requireAuth, async (req, res, next) => {
 
     const { user } = req
 
