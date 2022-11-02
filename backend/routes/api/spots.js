@@ -782,7 +782,7 @@ router.post('/:spotId/bookings', restoreUser, requireAuth, validateBookingBody, 
 
 
     return res.status(200).json({
-        ...newBooking
+        ...newBooking.dataValues
     })
 
 })
