@@ -221,7 +221,7 @@ router.delete('/:bookingId', restoreUser, requireAuth, async (req, res, next) =>
         // })
     }
 
-    if(new Date(findBooking.dataValues.startDate) > new Date()){
+    if(new Date(findBooking.dataValues.startDate) < new Date()){
         return next(customErrorFormatter("Bookings that have been started can't be deleted", 403))
 
         // return res.status(403).json({
